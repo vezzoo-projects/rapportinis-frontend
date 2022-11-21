@@ -4,6 +4,7 @@
     "scripts": {
         "start": "ng serve",
         "build": "ng build",
+        "build:prod": "ng build --prod",
         "tag": "node scripts/tag"
     },
     "private": true,
