@@ -1,0 +1,168 @@
+<div class="container">
+    <div class="row mt-20">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+            <form-container>
+                <form (ngSubmit)="onSubmit()" #form="ngForm">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Ora di inizio</mat-label>
+                                <input matInput ngModel placeholder="hh.mm" name="time" [textMask]="{ mask: timeMask }" #timeField />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xs-12 col-sm-7">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Attività</mat-label>
+                                <input matInput placeholder="Descrizione attività" ngModel name="activity" #activityField />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xs-12 col-sm-2 vertical-center button-wrapper">
+                            <button
+                                *ngIf="!editingActivity"
+                                mat-raised-button
+                                color="primary"
+                                type="submit"
+                                [disabled]="!isActivityFilled() || disableAllButtons()"
+                            >
+                                Inserisci
+                            </button>
+                            <button
+                                *ngIf="editingActivity"
+                                mat-raised-button
+                                color="primary"
+                                type="submit"
+                                [disabled]="!isActivityFilled() || loading"
+                            >
+                                Modifica
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 vertical-center col-sm-offset-2">
+                            <button
+                                mat-raised-button
+                                color="primary"
+                                type="button"
+                                [disabled]="!hasRecords() || launchBreakDone || disableAllButtons()"
+                                (click)="addActivity(activities.launchBreak)"
+                            >
+                                Inizia pausa pranzo
+                            </button>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 vertical-center">
+                            <button
+                                mat-raised-button
+                                color="primary"
+                                type="button"
+                                [disabled]="!hasRecords() || disableAllButtons()"
+                                (click)="addActivity(activities.dayEnd)"
+                            >
+                                Termina giornata
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <table mat-table [dataSource]="data">
+                                <ng-container matColumnDef="activity">
+                                    <th mat-header-cell *matHeaderCellDef>Attività</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <ng-container *ngIf="element.activity !== activities.delta">
+                                            <span *ngIf="element.activity !== activities.total">
+                                                {{ element.activity }}
+                                            </span>
+                                            <span *ngIf="element.activity === activities.total"> Totale </span>
+                                        </ng-container>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="time">
+                                    <th mat-header-cell *matHeaderCellDef>Tempo (h)</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span [ngClass]="{ negative: element.time.startsWith('-') }">
+                                            {{ element.time }}
+                                        </span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="prevActivity">
+                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button
+                                            *ngIf="element.activity !== activities.total && element.activity !== activities.delta"
+                                            mat-icon-button
+                                            color="primary"
+                                            type="button"
+                                            [disabled]="isLastActivityOfList(element.activity) || disableAllButtons()"
+                                            (click)="addActivity(element.activity)"
+                                        >
+                                            <mat-icon>replay</mat-icon>
+                                        </button>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr
+                                    mat-row
+                                    *matRowDef="let row; columns: displayedColumns"
+                                    [ngClass]="{
+                                        'total-row': row.activity === activities.total
+                                    }"
+                                ></tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <table mat-table [dataSource]="rawData">
+                                <ng-container matColumnDef="activity">
+                                    <th mat-header-cell *matHeaderCellDef>Attività</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{ element.activity }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="date">
+                                    <th mat-header-cell *matHeaderCellDef>Ora inizio</th>
+                                    <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="editActivity">
+                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <ng-container *ngIf="element.activity !== 'Fine giornata' && element.activity !== 'Pausa pranzo'">
+                                            <button
+                                                *ngIf="!isActivityEditing(element.activity_id)"
+                                                mat-icon-button
+                                                color="primary"
+                                                type="button"
+                                                [disabled]="disableAllButtons()"
+                                                (click)="startEditingActivity(element)"
+                                            >
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            <button
+                                                *ngIf="isActivityEditing(element.activity_id)"
+                                                mat-icon-button
+                                                class="icon-red"
+                                                type="button"
+                                                (click)="stopEditingActivity()"
+                                            >
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </ng-container>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedRawColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedRawColumns"></tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </form-container>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+.mt-20 {
+    margin-top: 20px;
+}
+
+.button-wrapper {
+    height: 54.81px;
+}
+
+.mat-table {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.mat-column {
+    &-prevActivity,
+    &-editActivity {
+        width: 16px;
+    }
+
+    &-date,
+    &-time {
+        width: calc(40% - 16px);
+    }
+
+    &-activity {
+        width: 60%;
+    }
+}
+
+.icon-red {
+    color: red;
+}
+
+.total-row {
+    span {
+        font-size: 15px;
+        font-weight: 500;
+    }
+}
+
+span.negative {
+    color: red;
+}
