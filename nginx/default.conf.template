@@ -9,6 +9,6 @@ server {
     index index.html;
 
     location / {
-        try_files $uri $uri/ $uri.html =404;
+        try_files ${DOLLAR}uri ${DOLLAR}uri/ ${DOLLAR}uri.html =404;
     }
 }
