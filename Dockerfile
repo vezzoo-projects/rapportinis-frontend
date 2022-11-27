@@ -6,5 +6,4 @@ COPY entrypoint.sh /etc/nginx/entrypoint.sh
 
 RUN chmod +x /etc/nginx/entrypoint.sh
 
-ENTRYPOINT [ "/etc/nginx/entrypoint.sh" ] 
-
+# ENTRYPOINT [ "/etc/nginx/entrypoint.sh" ] 
