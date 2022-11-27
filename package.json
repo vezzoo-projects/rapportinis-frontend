@@ -1,6 +1,6 @@
 {
     "name": "rapportinis",
-    "version": "4.0.1",
+    "version": "5.0.0",
     "scripts": {
         "start": "ng serve",
         "build": "ng build",
