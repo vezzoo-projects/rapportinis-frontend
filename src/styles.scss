@@ -24,3 +24,19 @@ div.vertical-center {
     display: flex;
     align-items: center;
 }
+
+// scrollbar (https://www.digitalocean.com/community/tutorials/css-scrollbars)
+body::-webkit-scrollbar {
+    width: 10px; /* width of the entire scrollbar */
+    height: 10px; /* height of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+    background: #e8eff3; /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #bbb; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 3px solid #e8eff3; /* creates padding around scroll thumb */
+}
