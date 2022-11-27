@@ -3,4 +3,4 @@ FROM nginx:1.23.2
 COPY dist/rapportinis /usr/share/nginx/html
 COPY nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
 
-CMD ["envsubst", "<", "/etc/nginx/conf.d/default.conf.template", ">", "/etc/nginx/conf.d/default.conf"]
+CMD envsubst < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
