@@ -18,6 +18,7 @@ interface RawRowData {
 }
 
 enum CustomActivities {
+    break = '--%break%--',
     launchBreak = '--%launch-break%--',
     dayEnd = '--%day-end%--',
     total = '--%total%--',
@@ -35,7 +36,6 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     @ViewChild('activityField') activityField: ElementRef
 
     loading: boolean = false
-    launchBreakDone: boolean = false
     dayEndDone: boolean = false
     activities = CustomActivities
     data: RowData[] = []
@@ -227,10 +227,13 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
                             activity: this.activities.total,
                             time: response.total,
                         })
-                        this.data.push({
-                            activity: this.activities.delta,
-                            time: response.delta,
-                        })
+                        const weekDay = this.selectedDate.getDay()
+                        if (weekDay != 0 && weekDay != 6) {
+                            this.data.push({
+                                activity: this.activities.delta,
+                                time: response.delta,
+                            })
+                        }
                     }
                 }
             },
@@ -248,10 +251,10 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
                 this.loading = false
                 if (response) {
                     this.rawData = response.map((a) => {
-                        if (a.activity === this.activities.launchBreak) {
+                        if (a.activity === this.activities.break || a.activity === this.activities.launchBreak) {
                             return {
                                 ...a,
-                                activity: 'Pausa pranzo',
+                                activity: 'Pausa',
                             }
                         } else if (a.activity === this.activities.dayEnd) {
                             return {
@@ -262,7 +265,6 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
                             return a
                         }
                     })
-                    this.launchBreakDone = response.some((a) => a.activity === this.activities.launchBreak)
                     this.dayEndDone = response.some((a) => a.activity === this.activities.dayEnd)
                 }
             },
