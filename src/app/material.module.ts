@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { MatNativeDateModule } from '@angular/material/core'
+import { MatNativeDateModule, NativeDateAdapter } from '@angular/material/core'
 // Material Form Controls
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatCheckboxModule } from '@angular/material/checkbox'
@@ -87,3 +87,9 @@ const materialImports = [
     exports: materialImports,
 })
 export class MaterialModule {}
+
+export class CustomDateAdapter extends NativeDateAdapter {
+    getFirstDayOfWeek(): number {
+        return 1
+    }
+}
