@@ -228,10 +228,13 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
                             activity: this.activities.total,
                             time: response.total,
                         })
-                        this.data.push({
-                            activity: this.activities.delta,
-                            time: response.delta,
-                        })
+
+                        if (response.delta) {
+                            this.data.push({
+                                activity: this.activities.delta,
+                                time: response.delta,
+                            })
+                        }
                     }
                 }
             },
