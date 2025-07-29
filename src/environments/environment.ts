@@ -5,7 +5,7 @@
 export const environment = {
     production: false,
     path: 'http://127.0.0.1', // Connection to locale
-    port: 4202,
+    port: 3000,
     optionalLayer: '',
 
     // path: 'http://192.168.1.8',    // Connection to LAN server
