@@ -57,6 +57,13 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
         this.selectedDate = toolbarService.getSelectedDate()
 
         this.subs.push(
+            this.toolbarService.refresh.subscribe(() => {
+                if (this.authService.isUserDefined()) {
+                    this.fetchData()
+                }
+            }),
+        )
+        this.subs.push(
             this.toolbarService.selectedDate.subscribe((newDate: Date) => {
                 this.selectedDate = newDate
                 if (this.authService.isUserDefined()) {
@@ -267,6 +274,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
                         }
                     })
                     this.dayEndDone = response.some((a) => a.activity === this.activities.dayEnd)
+                    this.toolbarService.showRefresh = this.rawData.length > 0 && !this.dayEndDone
                 }
             },
             (error) => {

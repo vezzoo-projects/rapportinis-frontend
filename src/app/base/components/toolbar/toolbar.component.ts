@@ -23,6 +23,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this.sub?.unsubscribe()
     }
 
+    get showRefresh() {
+        return this.toolbarService.showRefresh
+    }
+
     showDate(): string {
         return this.selectedDate.toLocaleDateString('it-IT')
     }
@@ -30,6 +34,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     onSelectedDateChange(event: Date) {
         this.selectedDate = event
         this.toolbarService.setSelectedDate(this.selectedDate)
+    }
+
+    refresh() {
+        this.toolbarService.refresh.next()
     }
 
     doLogout(): void {

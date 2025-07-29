@@ -6,6 +6,9 @@
         <ng-container *ngIf="username">
             <p class="username-box">{{ username }}</p>
             <div class="functions-box vertical-center">
+                <button mat-icon-button type="button" (click)="refresh()" *ngIf="showRefresh">
+                    <mat-icon aria-hidden="false" aria-label="Refresh"> replay </mat-icon>
+                </button>
                 <span>{{ showDate() }}</span>
                 <mat-form-field style="width: 1px; visibility: hidden">
                     <input (dateInput)="onSelectedDateChange($event.value)" matInput [matDatepicker]="picker" />
