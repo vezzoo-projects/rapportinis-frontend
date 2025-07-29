@@ -211,6 +211,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
         const body = {
             startTimestamp: Math.round(date.getTime() / 1000),
+            now: Math.round(new Date().getTime() / 1000),
         }
 
         this.loading = true
@@ -227,13 +228,10 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
                             activity: this.activities.total,
                             time: response.total,
                         })
-                        const weekDay = this.selectedDate.getDay()
-                        if (weekDay != 0 && weekDay != 6) {
-                            this.data.push({
-                                activity: this.activities.delta,
-                                time: response.delta,
-                            })
-                        }
+                        this.data.push({
+                            activity: this.activities.delta,
+                            time: response.delta,
+                        })
                     }
                 }
             },
