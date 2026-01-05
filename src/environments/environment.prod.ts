@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    path: 'https://wrk.applehome.it',
+    path: 'https://rapportinis.lvezzoli.it',
     port: undefined,
     optionalLayer: '/api',
 }
